@@ -74,6 +74,7 @@ async validateUser(email: string, password: string): Promise<any> {
     const payload = { email: user.email, sub: user.id }; // Cargar los datos que quieres en el payload
     return {
       access_token: this.jwtService.sign(payload), // Generar el token
+      user
     };
   }
 }

@@ -1,42 +1,31 @@
-import { Message } from 'src/messages/entities/message.entity';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, Unique } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Message } from 'src/messages/entities/message.entity';
 
 @Entity()
+@Unique(['conversationID'])  // Asegura que el conversationID sea único
 export class Conversation {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: number;  // ID autoincrementable de la conversación
 
   @Column()
   nombre: string;
 
-  // Relación con el cliente (usuario que crea la conversación)
-  @ManyToOne(() => User, (user) => user.conversations, { eager: true })  // Usando 'user.conversations'
-  @JoinColumn({ name: 'userId' })
-  user: User;
-
-  // Relación con los mensajes de la conversación
-  @OneToMany(() => Message, (message) => message.conversation)
-  messages: Message[];
-
-  // Fecha de creación (automática cuando se crea la conversación)
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' , nullable: true })
-  createAT?: Date;  // Asegúrate de que 'createAT' tenga un valor por defecto
-
-  // Fecha de la última actualización (automática en cada modificación)
-  @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  updateAT?: Date;
-
-  // Texto de la conversación
-  @Column()
+  @Column({ nullable: true })
   text: string;
 
-  // Estado de la conversación
-  @Column()
+  @Column({ default: 'active' })
   status: string;
 
-  // Relación con el agente (opcional si la conversación está siendo atendida por un agente)
-  @ManyToOne(() => User, { nullable: true }) // El agente es un usuario y esta relación es opcional
-  @JoinColumn({ name: 'agentId' })
-  agent?: User; // Puede ser nulo si la conversación aún no tiene un agente asignado
+  @Column({ nullable: true,type: 'int', unique: true, generated: 'increment' })
+  conversationID: number;  
+
+  @ManyToOne(() => User, (user) => user.conversations, { nullable: false, onDelete: 'CASCADE' })
+  user: User;
+
+  @ManyToOne(() => User, (user) => user.assignedConversations, { nullable: true, onDelete: 'SET NULL' })
+  agent: User;
+
+  @OneToMany(() => Message, (message) => message.conversation)
+  messages: Message[];
 }

@@ -23,4 +23,7 @@ export class Message {
 
   @Column({ nullable: true })
   senderId: number; // Puede ser el ID del cliente o el agente que envió el mensaje
+
+  @Column({ nullable: true })
+  agent: number; // Puede ser el ID del cliente o el agente que envió el mensaje
 }

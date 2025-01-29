@@ -8,6 +8,7 @@ import { MessagesModule } from './messages/messages.module';
 import { Message } from './messages/entities/message.entity';
 import { JwtModule } from '@nestjs/jwt';
 import * as dotenv from 'dotenv';
+import { ChatGateway } from './socket/chat.gateway';
 
 dotenv.config();  // Cargar las variables de entorno
 
@@ -26,6 +27,7 @@ dotenv.config();  // Cargar las variables de entorno
     UsersModule,
     ConversationsModule,
     MessagesModule,
+    ChatGateway,
     JwtModule.register({
       secret: process.env.JWT_SECRET_KEY,  // Usar la variable de entorno
       signOptions: { expiresIn: '1h' },

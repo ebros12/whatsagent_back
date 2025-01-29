@@ -1,4 +1,3 @@
-// src/conversations/dto/create-conversation.dto.ts
 import { IsInt, IsString, IsOptional } from 'class-validator';
 
 export class CreateConversationDto {
@@ -8,8 +7,12 @@ export class CreateConversationDto {
   @IsInt()
   userId: number; // ID del usuario (debería coincidir con el modelo de tu base de datos)
 
+  @IsOptional()
   @IsInt()
-  agentId: number; // ID del agente (debería ser agregado aquí)
+  agentId: number | null;  // Ahora puede ser null
+
+  @IsString()
+  conversationID: number; // Debería ser un número
 
   @IsOptional()
   @IsString()

@@ -1,4 +1,3 @@
-// src/users/users.module.ts
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersService } from './users.service';
@@ -6,7 +5,6 @@ import { UsersController } from './users.controller';
 import { User } from './entities/user.entity';
 import { JwtModule } from '@nestjs/jwt';  // Importa JwtModule
 import { JwtStrategy } from './strategies/jwt.strategy';
-
 
 @Module({
   imports: [
@@ -18,6 +16,9 @@ import { JwtStrategy } from './strategies/jwt.strategy';
   ],
   controllers: [UsersController],
   providers: [UsersService, JwtStrategy], // Agregar la estrategia JWT
-  exports: [UsersService], // Exporta el servicio si lo necesitas en otros módulos
+  exports: [
+    UsersService, // Exporta el servicio de Users
+    TypeOrmModule.forFeature([User]), // Exporta el repositorio User
+  ],
 })
 export class UsersModule {}

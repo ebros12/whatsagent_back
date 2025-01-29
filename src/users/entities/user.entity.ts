@@ -1,6 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, Unique } from 'typeorm';
 import { Conversation } from 'src/conversations/entities/conversation.entity';
-import { Message } from 'src/messages/entities/message.entity';
 
 @Entity()
 @Unique(['email'])  // Asegura que el email sea único a nivel de base de datos
@@ -35,5 +34,5 @@ export class User {
 
   // Relación OneToMany: Un agente puede tener muchas conversaciones asignadas
   @OneToMany(() => Conversation, (conversation) => conversation.agent)
-  agents: Conversation[];
+  assignedConversations: Conversation[]; 
 }
